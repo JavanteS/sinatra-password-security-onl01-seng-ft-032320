@@ -32,14 +32,16 @@ class ApplicationController < Sinatra::Base
 
 	post "/login" do
 		#your code here!
+		#binding.pry
 		user = User.find_by(username: params[:username])
 
 		if user && user.authenticate(params[:password])
 			session[:user_id] = user.id
+			
 			redirect "/success"
-		  else
+		else
 			redirect "/failure"
-		  end
+		end
 	end
 
 	get "/success" do
@@ -61,11 +63,11 @@ class ApplicationController < Sinatra::Base
 
 	helpers do
 		def logged_in?
-			!!session[user_id]
+			!!session[:user_id]
 		end
 
 		def current_user
-			User.find(session[user_id])
+			User.find(session[:user_id])
 		end
 	end
 
